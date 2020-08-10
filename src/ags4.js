@@ -8,7 +8,7 @@
 import utils from './utils'
 
 export default function(content) {
-  var groups = {}
+  var groups = []
   var blocks = content.trim().split('\n\r').map(block => block.trim().split(/\n/g))
   blocks.forEach(block => {
     if (block.length) {
@@ -77,10 +77,11 @@ export default function(content) {
         }
       })
       if (groupName.length) {
-        groups[groupName] = {
+        groups.push({
+          group: groupName,
           columns: headers,
           rows: data
-        }
+        })
       }
     }
   })
