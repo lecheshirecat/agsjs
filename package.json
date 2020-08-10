@@ -1,0 +1,27 @@
+{
+  "name": "agsjs",
+  "version": "0.1.0",
+  "description": "A modern and lightweight AGS file editor for JavaScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "babel": "babel src -d dist"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "keywords": [
+    "vue",
+    "ags",
+    "ags file",
+    "editor",
+    "js",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ch3sh1r3Cat/agsjs.git"
+  },
+  "author": "cheshirecat <ca.leduc@me.com>",
+  "license": "MIT"
+}
