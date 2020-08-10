@@ -1,7 +1,7 @@
 {
   "name": "agsjs",
-  "version": "0.2.0",
-  "description": "A modern and lightweight AGS file editor for JavaScript",
+  "version": "0.9.0",
+  "description": "A modern and lightweight AGS file parser for JavaScript",
   "main": "dist/index.js",
   "scripts": {
     "babel": "babel src -d dist"

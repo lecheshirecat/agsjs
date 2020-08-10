@@ -1,6 +1,6 @@
 # agsjs
 
-A modern and lightweight AGS file editor for JavaScript
+A modern and lightweight AGS file parser for JavaScript
 
 ## Installation
 
@@ -16,7 +16,7 @@ Default use as ES6 module
 import AGS from 'agsjs'
 
 var content = fetch('sample.ags').then(x => x.text()),
-var results = AGS.read(content)
+var results = AGS.parse(content)
 ```
 
 The results are returned as a JavaScript Array parsed from the file content. It follows the tree-like structure of the file format.
