@@ -1,6 +1,6 @@
 {
   "name": "agsjs",
-  "version": "0.9.0",
+  "version": "1.0.1",
   "description": "A modern and lightweight AGS file parser for JavaScript",
   "main": "dist/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ch3sh1r3Cat/agsjs.git"
+    "url": "https://github.com/zecheshirecat/agsjs"
   },
   "author": "cheshirecat <ca.leduc@me.com>",
   "license": "MIT"

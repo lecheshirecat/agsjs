@@ -18,5 +18,31 @@ export default {
   },
   version: function(content) {
     return content.indexOf('**PROJ') > -1 ? 3 : 4
+  },
+  find: function(heading, groups) {
+    if (!groups.length) return null
+    var i = groups.findIndex(group => group.heading === heading)
+    return i > -1 ? groups[i] : null
+  },
+  map: function(group, keys) {
+    if (!group || !keys.length) return []
+    var columns = group.columns || []
+    var rows = group.rows || []
+    return rows.map(row => {
+      var values = {}
+      keys.forEach(key => {
+        var i = columns.findIndex(column => column.name === key.header)
+        var value = i > -1 ? row[i] : null
+        if (key.required) {
+          values[key.name] = value !== null ? value : (key.default || null)
+        } else {
+          values[key.name] = value
+        }
+        if (key.format === 'percent') {
+          values[key.name] = isNaN(value) ? value : value / 100
+        }
+      })
+      return values
+    })
   }
 }

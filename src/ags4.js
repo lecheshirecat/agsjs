@@ -9,82 +9,92 @@ import utils from './utils'
 
 export default function(content) {
   var groups = []
-  var blocks = content.trim().split('\n\r').map(block => block.trim().split(/\n/g))
-  blocks.forEach(block => {
-    if (block.length) {
-      var groupName = ''
-      var headers = []
-      var data = []
-      block.forEach(group => {
-        var cells = []
-        var row = group.split('",').map(part => {
-          const v = (part || '').replace(/"/g, '')
-          return v.length > 0 ? v : ''
-        })
-        if (row.length > 1) {
-          var firstCell = row[0] || ''
-          if (firstCell === 'GROUP') {
-            groupName = (row[1] || '').trim()
-          } else if (firstCell === 'HEADING') {
-            row.forEach((cell, index) => {
-              if (index > 0) {
-                headers.push({
-                  name: cell.length ? cell.trim() : 'undefined',
-                  unit: '',
-                  type: ''
-                })
-              }
-            })
-          } else if (firstCell === 'UNIT') {
-            row.forEach((cell, index) => {
-              if (index > 0 && index < headers.length) {
-                headers[index - 1].unit = cell.length ? cell.trim() : ''
-              }
-            })
-          } else if (firstCell === 'TYPE') {
-            row.forEach((cell, index) => {
-              if (index > 0 && index < headers.length) {
-                headers[index - 1].type = cell.length ? cell.trim() : ''
-              }
-            })
-          } else if (firstCell === 'DATA') {
-            row.forEach((cell, index) => {
-              const value = cell.length ? cell.trim() : ''
-              if (index > 0) {
-                const header = index < headers.length ? headers[index - 1] : {}
-                const type = header.type || 'X'
-                if (type === 'DT') {
-                  cells.push(utils.testIsoDate(value) ? value : null)
-                } else if (type.indexOf('DP') > -1 || type.indexOf('SP') > 1) {
-                  const dp = Number.parseInt(type.replace(/\D+/g, ''))
-                  cells.push(value.length ? utils.round(Number.parseFloat(value), dp) : null)
-                } else {
-                  if (utils.testNonDigit(value)) {
-                    cells.push(value.length ? value : null)
-                  } else {
-                    cells.push(value.length ? utils.round(Number.parseFloat(value), 5) : null)
-                  }
-                }
-              }
-            })
-            if (cells.length < headers.length) {
-              while (cells.length < headers.length) {
-                cells.push(null)
-              }
-            }
-            data.push(cells)
+  var blocks = utils.block(content)
+
+  for (let i = 0; i < blocks.length; i++) {
+    var block = blocks[i]
+    var heading = ''
+    var headers = []
+    var data = []
+    for (let j = 0; j < block.length; j++) {
+      var row = block[j]
+      if (row.length < 2) {
+        continue
+      }
+
+      var firstCell = row[0] || ''
+      if (firstCell === 'GROUP') {
+        heading = (row[1] || '').trim()
+      } else if (firstCell === 'HEADING') {
+        for (let k = 1; k < row.length; k++) {
+          const cell = row[k]
+          headers.push({
+            name: cell.length ? cell.trim() : 'undefined',
+            unit: '',
+            type: ''
+          })
+        }
+      } else if (firstCell === 'UNIT') {
+        for (let k = 1; k < row.length; k++) {
+          const cell = row[k]
+          if (k < headers.length) {
+            headers[k - 1].unit = cell.length ? cell.trim() : ''
           }
         }
-      })
-      if (groupName.length) {
-        groups.push({
-          group: groupName,
-          columns: headers,
-          rows: data
-        })
+      } else if (firstCell === 'TYPE') {
+        for (let k = 1; k < row.length; k++) {
+          const cell = row[k]
+          if (k < headers.length) {
+            headers[k - 1].type = cell.length ? cell.trim() : ''
+          }
+        }
+      } else if (firstCell === 'DATA') {
+        var cells = []
+        for (let k = 1; k < row.length; k++) {
+          const cell = row[k]
+          const value = cell.length ? cell.trim() : ''
+          const header = k < headers.length ? headers[k - 1] : {}
+          const type = header.type || 'X'
+          if (type === 'DT') {
+            cells.push(utils.testIsoDate(value) ? value : null)
+          } else if (type.indexOf('DP') > -1 || type.indexOf('SP') > 1) {
+            const dp = Number.parseInt(type.replace(/\D+/g, ''))
+            cells.push(value.length ? utils.round(Number.parseFloat(value), dp) : null)
+          } else {
+            if (utils.testNonDigit(value)) {
+              cells.push(value.length ? value : null)
+            } else {
+              cells.push(value.length ? utils.round(Number.parseFloat(value), 5) : null)
+            }
+          }
+        }
+
+        if (headers.length < cells.length) {
+          while (headers.length < cells.length) {
+            headers.push({
+              name: `${heading}_${headers.length}`,
+              unit: '',
+              type: ''
+            })
+          }
+        }
+        if (cells.length < headers.length) {
+          while (cells.length < headers.length) {
+            cells.push(null)
+          }
+        }
+
+        data.push(cells)
       }
     }
-  })
+    if (heading.length) {
+      groups.push({
+        heading: heading,
+        columns: headers,
+        rows: data
+      })
+    }
+  }
 
   return groups
 }
