@@ -37,14 +37,14 @@ export default function(content) {
       } else if (firstCell === 'UNIT') {
         for (let k = 1; k < row.length; k++) {
           const cell = row[k]
-          if (k < headers.length) {
+          if (k - 1 < headers.length) {
             headers[k - 1].unit = cell.length ? cell.trim() : ''
           }
         }
       } else if (firstCell === 'TYPE') {
         for (let k = 1; k < row.length; k++) {
           const cell = row[k]
-          if (k < headers.length) {
+          if (k - 1 < headers.length) {
             headers[k - 1].type = cell.length ? cell.trim() : ''
           }
         }
@@ -53,18 +53,22 @@ export default function(content) {
         for (let k = 1; k < row.length; k++) {
           const cell = row[k]
           const value = cell.length ? cell.trim() : ''
-          const header = k < headers.length ? headers[k - 1] : {}
-          const type = header.type || 'X'
+          const header = k - 1 < headers.length ? headers[k - 1] : {}
+          const type = header.type || ''
           if (type === 'DT') {
             cells.push(utils.testIsoDate(value) ? value : null)
+          } else if (type === 'DMS') {
+            cells.push(value.length ? value : null)
           } else if (type.indexOf('DP') > -1 || type.indexOf('SP') > 1) {
-            const dp = Number.parseInt(type.replace(/\D+/g, ''))
-            cells.push(value.length ? utils.round(Number.parseFloat(value), dp) : null)
+            // const dp = Number.parseInt(type.replace(/\D+/g, ''))
+            cells.push(value.length ? utils.round(Number.parseFloat(value), 5) : null)
+          } else if (type === 'X' || type === 'ID') {
+            cells.push(value.length ? value : null)
           } else {
-            if (utils.testNonDigit(value)) {
-              cells.push(value.length ? value : null)
-            } else {
+            if (utils.testDigit(value)) {
               cells.push(value.length ? utils.round(Number.parseFloat(value), 5) : null)
+            } else {
+              cells.push(value.length ? value : null)
             }
           }
         }

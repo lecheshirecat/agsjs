@@ -7,13 +7,16 @@
 
 /* eslint-disable no-useless-escape */
 export default {
-  testIsoDate: function(value) {
+  testIsoDate(value) {
     return /\d{4}-\d{2}-\d{2}/g.test(value)
   },
-  testNonDigit: function(value) {
+  testDigit(value) {
+    return /^[\d.,]+$/g.test(value)
+  },
+  testNonDigit(value) {
     return /[a-zA-Z\/-]+/g.test(value)
   },
-  round: function(value, decimal) {
+  round(value, decimal) {
     if (!decimal) decimal = 1
     var r = Math.pow(10, decimal)
     var v = (value !== null || value !== undefined) ? Number.parseFloat(value) : 0
@@ -22,7 +25,7 @@ export default {
     }
     return Math.round(v * r) / r
   },
-  block: function(content) {
+  block(content) {
     var blocks = []
     if (!content || typeof content !== 'string') return blocks
     var groups = content.split(/(\r\n|\n\r|\n){2,}/gm)
@@ -31,7 +34,7 @@ export default {
       if (!group.length) {
         continue
       }
-      var rows = group.split(/\n/gm).map(row => row.split(/,/g).map(cell => cell.trim().replace(/^(")|(")$/g, '')))
+      var rows = group.split(/\n/gm).map(row => row.split(/",/g).map(cell => cell.trim().replace(/^(")|(")$/g, '')))
       blocks.push(rows)
     }
     return blocks

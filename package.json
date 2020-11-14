@@ -1,6 +1,6 @@
 {
   "name": "agsjs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A modern and lightweight AGS file parser for JavaScript",
   "main": "dist/index.js",
   "scripts": {

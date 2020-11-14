@@ -57,10 +57,10 @@ export default function(content) {
             cells.push(parts.length === 3 ? `${parts[0].trim()}-${parts[1].trim()}-${parts[2].trim()}` : null)
           } else if (!value.length) {
             cells.push(null)
-          } else if (utils.testNonDigit(value)) {
-            cells.push(value)
-          } else {
+          } else if (utils.testDigit(value)) {
             cells.push(utils.round(Number.parseFloat(value.trim()), 5))
+          } else {
+            cells.push(value)
           }
         }
         if (cont) {

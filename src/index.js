@@ -9,22 +9,22 @@ import ags3 from './ags3'
 import ags4 from './ags4'
 
 export default {
-  parse: function(content) {
+  parse(content) {
     if (!content || typeof content !== 'string' || !content.length) {
       return []
     }
     var version = content.indexOf('**PROJ') > -1 ? 3 : 4
     return version === 3 ? ags3(content) : ags4(content)
   },
-  version: function(content) {
+  version(content) {
     return content.indexOf('**PROJ') > -1 ? 3 : 4
   },
-  find: function(heading, groups) {
+  find(heading, groups) {
     if (!groups.length) return null
     var i = groups.findIndex(group => group.heading === heading)
     return i > -1 ? groups[i] : null
   },
-  map: function(group, keys) {
+  map(group, keys) {
     if (!group || !keys.length) return []
     var columns = group.columns || []
     var rows = group.rows || []
