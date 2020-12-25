@@ -29,7 +29,7 @@ Every entry of the array has three properties:
 ## Convenience functions
 
 ### find
-Returns a JavaScript object or null if heading is not found
+Returns a JavaScript `object` or `null` if heading is not found
 ```javascript
 import AGS from 'agsjs'
 

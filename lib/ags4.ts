@@ -5,17 +5,17 @@
  * @author Charlie LEDUC <contact@graphique.io>
  */
 
-import utils from './utils'
+import utils, { AGSGroup, AGSColumn } from './utils'
 
-export default function(content) {
-  var groups = []
+export default function(content: string | null): AGSGroup[] {
+  var groups: AGSGroup[] = []
   var blocks = utils.block(content)
 
   for (let i = 0; i < blocks.length; i++) {
     var block = blocks[i]
     var heading = ''
-    var headers = []
-    var data = []
+    var headers: AGSColumn[] = []
+    var data: (string | number | null)[][] = []
     for (let j = 0; j < block.length; j++) {
       var row = block[j]
       if (row.length < 2) {
@@ -53,7 +53,7 @@ export default function(content) {
         for (let k = 1; k < row.length; k++) {
           const cell = row[k]
           const value = cell.length ? cell.trim() : ''
-          const header = k - 1 < headers.length ? headers[k - 1] : {}
+          const header = k - 1 < headers.length ? headers[k - 1] : { name: 'undefined' }
           const type = header.type || ''
           if (type === 'DT') {
             cells.push(utils.testIsoDate(value) ? value : null)
