@@ -5,24 +5,25 @@
  * @author Charlie LEDUC <contact@graphique.io>
  */
 
-import utils, { AGSGroup, AGSColumn } from './utils'
+import type { AGSGroup, AGSColumn } from './utils'
+import { block, testDigit, round } from './utils'
 
-export default function(content: string | null): AGSGroup[] {
-  var groups: AGSGroup[] = []
-  var blocks = utils.block(content)
+export default function (content: string | null): AGSGroup[] {
+  const groups: AGSGroup[] = []
+  const blocks = block(content)
 
   for (let i = 0; i < blocks.length; i++) {
-    var block = blocks[i]
-    var heading = ''
-    var headers: AGSColumn[] = []
-    var data: (string | number | null)[][] = []
+    let heading = ''
+    const block = blocks[i]
+    const headers: AGSColumn[] = []
+    const data: (string | number | null)[][] = []
     for (let j = 0; j < block.length; j++) {
-      var row = block[j]
+      const row = block[j]
       if (row.length < 1) {
         continue
       }
 
-      var firstCell = row[0] || ''
+      const firstCell = row[0] || ''
       if (firstCell.indexOf('**') > -1) {
         heading = firstCell.replace(/[?*]/g, '').trim()
       } else if (firstCell.charAt(0) === '*') {
@@ -42,8 +43,8 @@ export default function(content: string | null): AGSGroup[] {
           }
         }
       } else {
-        var cont = (firstCell === '<CONT>' && data.length > 0)
-        var cells = []
+        const cont = (firstCell === '<CONT>' && data.length > 0)
+        const cells = []
         for (let k = 0; k < row.length; k++) {
           const cell = row[k]
           const value = cell && cell.length ? cell : ''
@@ -57,14 +58,14 @@ export default function(content: string | null): AGSGroup[] {
             cells.push(parts.length === 3 ? `${parts[0].trim()}-${parts[1].trim()}-${parts[2].trim()}` : null)
           } else if (!value.length) {
             cells.push(null)
-          } else if (utils.testDigit(value)) {
-            cells.push(utils.round(parseFloat(value.trim()), 5))
+          } else if (testDigit(value)) {
+            cells.push(round(parseFloat(value.trim()), 5))
           } else {
             cells.push(value)
           }
         }
         if (cont) {
-          var prev = data[data.length - 1]
+          const prev = data[data.length - 1]
           for (let k = 1; k < cells.length; k++) {
             const cell = cells[k] || ''
             if (cell !== null) {

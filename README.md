@@ -12,11 +12,11 @@ npm install agsjs --save
 
 Default use as ES6 module
 
-```javascript
-import AGS from 'agsjs'
+```typescript
+import { parse } from 'agsjs'
 
-var content = fetch('sample.ags').then(x => x.text()),
-var results = AGS.parse(content)
+const content = fetch('sample.ags').then(x => x.text()),
+const results = parse(content)
 ```
 
 The results are returned as a JavaScript Array parsed from the file content. It follows the tree-like structure of the file format.
@@ -28,13 +28,13 @@ Every entry of the array has three properties:
 
 ## Convenience functions
 
-### find
+### findGroup
 Returns a JavaScript `object` or `null` if heading is not found
-```javascript
-import AGS from 'agsjs'
+```typescript
+import { parse, find } from 'agsjs'
 
-var groups = AGS.parse(content)
-var projGroup = AGS.find('PROJ', groups)
+const groups = parse(content)
+const projGroup = find('PROJ', groups)
 console.log(projGroup)
 // { "heading": "PROJ", columns: [...], rows: [...] } OR null
 ```
@@ -42,11 +42,11 @@ console.log(projGroup)
 ### map
 Returns an array
 Match group headings and rows to a custom JavaScript object with named keys as parameters
-```javascript
-import AGS from 'agsjs'
+```typescript
+import { parse, find, map } from 'agsjs'
 
-var groups = AGS.parse(content)
-var projGroup = AGS.find('PROJ', groups)
+const groups = parse(content)
+const projGroup = find('PROJ', groups)
 const keys = [{
   name: 'reference',
   header: 'PROJ_ID'
@@ -62,7 +62,7 @@ const keys = [{
   name: 'client',
   header: 'PROJ_CLNT'
 }]
-const dataset = AGS.map(projGroup, keys)
+const dataset = map(projGroup, keys)
 ```
 
 ## License
