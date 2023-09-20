@@ -1,6 +1,6 @@
 {
   "name": "agsjs",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "cheshirecat <ca.leduc@me.com>",
   "license": "MIT",
   "description": "A modern and lightweight AGS file parser for JavaScript with TypeScript support",
@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "typescript": "^4.5.5"
+    "typescript": "^5.2.2"
   },
   "keywords": [
     "vue",
@@ -25,6 +25,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/zecheshirecat/agsjs"
+    "url": "https://github.com/lecheshirecat/agsjs"
   }
 }

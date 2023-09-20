@@ -5,72 +5,86 @@
  * @author Charlie LEDUC <contact@graphique.io>
  */
 
-import type { AGSGroup, AGSColumn } from './utils'
-import { block, testDigit, round } from './utils'
+import {
+  block,
+  testDigit,
+  round,
+  type AGSGroup,
+  type AGSColumn
+} from "./utils";
 
-export default function (content: string | null): AGSGroup[] {
-  const groups: AGSGroup[] = []
-  const blocks = block(content)
+export default function (content?: string | null): AGSGroup[] {
+  const groups: AGSGroup[] = [];
+  const blocks = block(content);
 
   for (let i = 0; i < blocks.length; i++) {
-    let heading = ''
-    const block = blocks[i]
-    const headers: AGSColumn[] = []
-    const data: (string | number | null)[][] = []
+    let heading = "";
+    const block = blocks[i];
+    const headers: AGSColumn[] = [];
+    const data: (string | number | null)[][] = [];
     for (let j = 0; j < block.length; j++) {
-      const row = block[j]
+      const row = block[j];
       if (row.length < 1) {
-        continue
+        continue;
       }
 
-      const firstCell = row[0] || ''
-      if (firstCell.indexOf('**') > -1) {
-        heading = firstCell.replace(/[?*]/g, '').trim()
-      } else if (firstCell.charAt(0) === '*') {
+      const firstCell = row[0] ?? "";
+      if (firstCell.indexOf("**") > -1) {
+        heading = firstCell.replace(/[?*]/g, "").trim();
+      } else if (firstCell.charAt(0) === "*") {
         for (let k = 0; k < row.length; k++) {
-          const cell = row[k]
+          const cell = row[k];
           headers.push({
-            name: cell.length ? cell.replace(/[?*]/g, '').trim() : 'undefined',
-            unit: '',
-            type: ''
-          })
+            name: cell.length ? cell.replace(/[?*]/g, "").trim() : "undefined",
+            unit: "",
+            type: ""
+          });
         }
-      } else if (firstCell === '<UNITS>') {
+      } else if (firstCell === "<UNITS>") {
         for (let k = 0; k < row.length; k++) {
-          const cell = row[k]
+          const cell = row[k];
           if (k < headers.length) {
-            headers[k].unit = cell.length ? cell.trim() : ''
+            headers[k].unit = cell.length ? cell.trim() : "";
           }
         }
       } else {
-        const cont = (firstCell === '<CONT>' && data.length > 0)
-        const cells = []
+        const cont = firstCell === "<CONT>" && data.length > 0;
+        const cells = [];
         for (let k = 0; k < row.length; k++) {
-          const cell = row[k]
-          const value = cell && cell.length ? cell : ''
-          const header = k < headers.length ? headers[k] : { name: 'undefined' }
-          const unit = header.unit || ''
-          if (unit === 'dd/mm/yyyy') {
-            const parts = value.split('/')
-            cells.push(parts.length === 3 ? `${parts[2].trim()}-${parts[1].trim()}-${parts[0].trim()}` : null)
-          } else if (unit === 'yyyy-mm-dd') {
-            const parts = value.split('-')
-            cells.push(parts.length === 3 ? `${parts[0].trim()}-${parts[1].trim()}-${parts[2].trim()}` : null)
+          const cell = row[k];
+          const value = cell && cell.length ? cell : "";
+          const header =
+            k < headers.length ? headers[k] : { name: "undefined" };
+          const unit = header.unit ?? "";
+          if (unit === "dd/mm/yyyy") {
+            const parts = value.split("/");
+            cells.push(
+              parts.length === 3
+                ? `${parts[2].trim()}-${parts[1].trim()}-${parts[0].trim()}`
+                : null
+            );
+          } else if (unit === "yyyy-mm-dd") {
+            const parts = value.split("-");
+            cells.push(
+              parts.length === 3
+                ? `${parts[0].trim()}-${parts[1].trim()}-${parts[2].trim()}`
+                : null
+            );
           } else if (!value.length) {
-            cells.push(null)
+            cells.push(null);
           } else if (testDigit(value)) {
-            cells.push(round(parseFloat(value.trim()), 5))
+            cells.push(round(parseFloat(value.trim()), 5));
           } else {
-            cells.push(value)
+            cells.push(value);
           }
         }
         if (cont) {
-          const prev = data[data.length - 1]
+          const prev = data[data.length - 1];
           for (let k = 1; k < cells.length; k++) {
-            const cell = cells[k] || ''
+            const cell = cells[k] ?? "";
             if (cell !== null) {
               if (k < prev.length) {
-                prev[k] = `${(prev[k] || '')}${cell}`
+                prev[k] = `${prev[k] ?? ""}${cell}`;
               }
             }
           }
@@ -79,17 +93,17 @@ export default function (content: string | null): AGSGroup[] {
             while (headers.length < cells.length) {
               headers.push({
                 name: `${heading}_${headers.length}`,
-                unit: '',
-                type: ''
-              })
+                unit: "",
+                type: ""
+              });
             }
           }
           if (cells.length < headers.length) {
             while (cells.length < headers.length) {
-              cells.push(null)
+              cells.push(null);
             }
           }
-          data.push(cells)
+          data.push(cells);
         }
       }
     }
@@ -99,9 +113,9 @@ export default function (content: string | null): AGSGroup[] {
         heading: heading,
         columns: headers,
         rows: data
-      })
+      });
     }
   }
 
-  return groups
+  return groups;
 }

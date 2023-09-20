@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 function default_1(content) {
+    var _a, _b, _c;
     const groups = [];
     const blocks = (0, utils_1.block)(content);
     for (let i = 0; i < blocks.length; i++) {
-        let heading = '';
+        let heading = "";
         const block = blocks[i];
         const headers = [];
         const data = [];
@@ -14,53 +15,53 @@ function default_1(content) {
             if (row.length < 2) {
                 continue;
             }
-            const firstCell = row[0] || '';
-            if (firstCell === 'GROUP') {
-                heading = (row[1] || '').trim();
+            const firstCell = (_a = row[0]) !== null && _a !== void 0 ? _a : "";
+            if (firstCell === "GROUP") {
+                heading = ((_b = row[1]) !== null && _b !== void 0 ? _b : "").trim();
             }
-            else if (firstCell === 'HEADING') {
+            else if (firstCell === "HEADING") {
                 for (let k = 1; k < row.length; k++) {
                     const cell = row[k];
                     headers.push({
-                        name: cell.length ? cell.trim() : 'undefined',
-                        unit: '',
-                        type: ''
+                        name: cell.length ? cell.trim() : "undefined",
+                        unit: "",
+                        type: ""
                     });
                 }
             }
-            else if (firstCell === 'UNIT') {
+            else if (firstCell === "UNIT") {
                 for (let k = 1; k < row.length; k++) {
                     const cell = row[k];
                     if (k - 1 < headers.length) {
-                        headers[k - 1].unit = cell.length ? cell.trim() : '';
+                        headers[k - 1].unit = cell.length ? cell.trim() : "";
                     }
                 }
             }
-            else if (firstCell === 'TYPE') {
+            else if (firstCell === "TYPE") {
                 for (let k = 1; k < row.length; k++) {
                     const cell = row[k];
                     if (k - 1 < headers.length) {
-                        headers[k - 1].type = cell.length ? cell.trim() : '';
+                        headers[k - 1].type = cell.length ? cell.trim() : "";
                     }
                 }
             }
-            else if (firstCell === 'DATA') {
+            else if (firstCell === "DATA") {
                 const cells = [];
                 for (let k = 1; k < row.length; k++) {
                     const cell = row[k];
-                    const value = cell.length ? cell.trim() : '';
-                    const header = k - 1 < headers.length ? headers[k - 1] : { name: 'undefined' };
-                    const type = header.type || '';
-                    if (type === 'DT') {
+                    const value = cell.length ? cell.trim() : "";
+                    const header = k - 1 < headers.length ? headers[k - 1] : { name: "undefined" };
+                    const type = (_c = header.type) !== null && _c !== void 0 ? _c : "";
+                    if (type === "DT") {
                         cells.push((0, utils_1.testIsoDate)(value) ? value : null);
                     }
-                    else if (type === 'DMS') {
+                    else if (type === "DMS") {
                         cells.push(value.length ? value : null);
                     }
-                    else if (type.indexOf('DP') > -1 || type.indexOf('SP') > 1) {
+                    else if (type.indexOf("DP") > -1 || type.indexOf("SP") > 1) {
                         cells.push(value.length ? (0, utils_1.round)(Number.parseFloat(value), 5) : null);
                     }
-                    else if (type === 'X' || type === 'ID') {
+                    else if (type === "X" || type === "ID") {
                         cells.push(value.length ? value : null);
                     }
                     else {
@@ -76,8 +77,8 @@ function default_1(content) {
                     while (headers.length < cells.length) {
                         headers.push({
                             name: `${heading}_${headers.length}`,
-                            unit: '',
-                            type: ''
+                            unit: "",
+                            type: ""
                         });
                     }
                 }

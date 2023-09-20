@@ -19,4 +19,4 @@ export declare function testIsoDate(value: string): boolean;
 export declare function testDigit(value: string): boolean;
 export declare function testNonDigit(value: string): boolean;
 export declare function round(value: number | null, decimal: number | null): number;
-export declare function block(content: string | null): string[][][];
+export declare function block(content?: string | null): string[][][];

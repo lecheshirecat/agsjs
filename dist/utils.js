@@ -14,8 +14,8 @@ function testNonDigit(value) {
 }
 exports.testNonDigit = testNonDigit;
 function round(value, decimal) {
-    const r = Math.pow(10, decimal || 1);
-    var v = value || 0;
+    const r = Math.pow(10, decimal !== null && decimal !== void 0 ? decimal : 1);
+    let v = value !== null && value !== void 0 ? value : 0;
     if (isNaN(v) || !isFinite(v)) {
         v = 0;
     }
@@ -23,8 +23,8 @@ function round(value, decimal) {
 }
 exports.round = round;
 function block(content) {
-    var blocks = [];
-    if (typeof content !== 'string')
+    const blocks = [];
+    if (!content || typeof content !== "string")
         return blocks;
     const groups = content.split(/(\r\n|\n\r|\n){2,}/gm);
     for (let i = 0; i < groups.length; i++) {
@@ -32,7 +32,9 @@ function block(content) {
         if (!group.length) {
             continue;
         }
-        const rows = group.split(/\n/gm).map(row => row.split(/",/g).map(cell => cell.trim().replace(/^(")|(")$/g, '')));
+        const rows = group
+            .split(/\n/gm)
+            .map((row) => row.split(/",/g).map((cell) => cell.trim().replace(/^(")|(")$/g, "")));
         blocks.push(rows);
     }
     return blocks;
