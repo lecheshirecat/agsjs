@@ -1,18 +1,12 @@
 /**
  * AGS4.x importer
  *
- * @version 1.0.0
- * @author Charlie LEDUC <contact@graphique.io>
+ * @version 4.0.0
+ * @author Charlie LEDUC <contact@pixeliste.fr>
  */
 
-import {
-  block,
-  testDigit,
-  testIsoDate,
-  round,
-  type AGSGroup,
-  type AGSColumn
-} from "./utils";
+import type { AGSGroup, AGSColumn } from "./types";
+import { block, testDigit, testIsoDate, nround } from "./utils";
 
 export default function (content?: string | null): AGSGroup[] {
   const groups: AGSGroup[] = [];
@@ -70,14 +64,14 @@ export default function (content?: string | null): AGSGroup[] {
           } else if (type.indexOf("DP") > -1 || type.indexOf("SP") > 1) {
             // const dp = Number.parseInt(type.replace(/\D+/g, ''))
             cells.push(
-              value.length ? round(Number.parseFloat(value), 5) : null
+              value.length ? nround(Number.parseFloat(value), 5) : null
             );
           } else if (type === "X" || type === "ID") {
             cells.push(value.length ? value : null);
           } else {
             if (testDigit(value)) {
               cells.push(
-                value.length ? round(Number.parseFloat(value), 5) : null
+                value.length ? nround(Number.parseFloat(value), 5) : null
               );
             } else {
               cells.push(value.length ? value : null);

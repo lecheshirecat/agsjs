@@ -1,11 +1,12 @@
 /**
  * AGS importer
  *
- * @version 1.0.0
- * @author Charlie LEDUC <contact@graphique.io>
+ * @version 4.0.0
+ * @author Charlie LEDUC <contact@pixeliste.fr>
  */
 
-import type { AGSGroup, AGSMap } from "./utils";
+"use strict";
+import type { AGSGroup, AGSMap } from "./types";
 import ags3 from "./ags3";
 import ags4 from "./ags4";
 

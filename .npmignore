@@ -1,8 +1,12 @@
+# standard ignores
 .DS_Store
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# ignore src
+src/**/*
 
 # Editor directories and files
 .parcel-cache/
@@ -13,3 +17,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *-lock*
+tsconfig.json

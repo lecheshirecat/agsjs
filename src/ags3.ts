@@ -1,17 +1,12 @@
 /**
  * AGS3.x importer
  *
- * @version 1.0.0
- * @author Charlie LEDUC <contact@graphique.io>
+ * @version 4.0.0
+ * @author Charlie LEDUC <contact@pixeliste.fr>
  */
 
-import {
-  block,
-  testDigit,
-  round,
-  type AGSGroup,
-  type AGSColumn
-} from "./utils";
+import type { AGSGroup, AGSColumn } from "./types";
+import { block, testDigit, nround } from "./utils";
 
 export default function (content?: string | null): AGSGroup[] {
   const groups: AGSGroup[] = [];
@@ -73,7 +68,7 @@ export default function (content?: string | null): AGSGroup[] {
           } else if (!value.length) {
             cells.push(null);
           } else if (testDigit(value)) {
-            cells.push(round(parseFloat(value.trim()), 5));
+            cells.push(nround(parseFloat(value.trim()), 5));
           } else {
             cells.push(value);
           }
