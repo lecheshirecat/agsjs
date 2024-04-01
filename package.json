@@ -1,6 +1,6 @@
 {
   "name": "agsjs",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": "lecheshirecat <contact@pixeliste.fr>",
   "license": "MIT",
   "description": "A modern and lightweight AGS file parser for JavaScript with TypeScript support",

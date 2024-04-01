@@ -1,7 +1,7 @@
 /**
- * AGS3.x importer
+ * AGS3.x parser
  *
- * @version 4.0.0
+ * @version 4.0.1
  * @author Charlie LEDUC <contact@pixeliste.fr>
  */
 

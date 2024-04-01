@@ -1,4 +1,4 @@
-interface AGSColumn {
+export interface AGSColumn {
     name: string;
     unit?: string;
     type?: string;

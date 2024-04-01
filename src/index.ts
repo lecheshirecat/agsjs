@@ -1,16 +1,15 @@
 /**
- * AGS importer
+ * AGS parser
  *
- * @version 4.0.0
+ * @version 4.0.1
  * @author Charlie LEDUC <contact@pixeliste.fr>
  */
 
-"use strict";
-import type { AGSGroup, AGSMap } from "./types";
+import type { AGSGroup, AGSMap, AGSColumn } from "./types";
 import ags3 from "./ags3";
 import ags4 from "./ags4";
 
-export type { AGSGroup, AGSMap };
+export type { AGSGroup, AGSMap, AGSColumn };
 
 export function getVersion(content: string): number {
   return content.indexOf("**PROJ") > -1 ? 3 : 4;

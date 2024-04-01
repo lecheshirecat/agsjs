@@ -10,6 +10,7 @@ src/**/*
 
 # Editor directories and files
 .parcel-cache/
+.github/
 .idea
 .vscode
 *.suo
