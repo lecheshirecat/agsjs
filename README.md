@@ -15,8 +15,12 @@ Default use as ES6 module
 ```typescript
 import { parse } from 'agsjs'
 
-const content = fetch('sample.ags').then(x => x.text()),
-const results = parse(content)
+async function parseContent(fileUrl: string) {
+  const res = await fetch(fileUrl)
+  const content = await res.text()
+  const results = parse(content)
+  return results
+}
 ```
 
 The results are returned as a JavaScript Array parsed from the file content. It follows the tree-like structure of the file format.
@@ -28,7 +32,7 @@ Every entry of the array has three properties:
 
 ## Convenience functions
 
-### findGroup
+### find
 Returns a JavaScript `object` or `null` if heading is not found
 ```typescript
 import { parse, find } from 'agsjs'
